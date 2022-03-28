@@ -40,12 +40,23 @@ class SingleControllerTest extends TestCase
            'commentable_id' => $post->id
        ])->make()->toArray();
 
-       $response = $this->actingAs($user)->post(
-           route('single.comment',$post),
-           ['text'=>$date['text'],'title'=>$date['title']]
-       );
+        //    $response = $this->actingAs($user)->post(
+        //        route('single.comment',$post),
+        //        ['text'=>$date['text'],'title'=>$date['title']]
+        //    );
+        //$response->assertRedirect(route('single',$post));
 
-       $response->assertRedirect(route('single',$post));
+        $response = $this->actingAs($user)->
+            withHeaders([
+                'HTTP_X-Requested-with'=> 'XMLHttpRequest'
+            ])->postJson(
+                route('single.comment',$post),
+            ['text'=>$date['text'],'title'=>$date['title']]
+        );
+
+       $response->assertOk()->assertJson([
+           'created'=>true
+       ]);
        $this->assertDatabaseHas('comments',$date);
 
     }
@@ -62,13 +73,58 @@ class SingleControllerTest extends TestCase
 
        unset($date['user_id']);
 
-       $response = $this->post(
-           route('single.comment',$post),
-           ['text'=>$date['text'],'title'=>$date['title']]
-       );
+        //    $response = $this->post(
+        //        route('single.comment',$post),
+        //        ['text'=>$date['text'],'title'=>$date['title']]
+        //    );
 
-       $response->assertRedirect(route('login'));
+        //    $response->assertRedirect(route('login'));
+
+
+        $response = $this->withHeaders([
+                'HTTP_X-Requested-with'=> 'XMLHttpRequest'
+        ])->postJson(
+                route('single.comment',$post),
+        ['text'=>$date['text'],'title'=>$date['title']]
+        );
+
+        //$response->assertRedirect(route('login'));
+        $response->assertUnauthorized();
+
        $this->assertDatabaseMissing('comments',$date);
 
+    }
+
+
+
+    public function testCommentMethodWhenValidRequiredData()
+    {
+       // $this->withoutExceptionHandling();
+
+       $post = Post::factory()->create();
+
+
+    //    $response = $this->actingAs(User::factory()->create())
+    //     ->post(
+    //         route('single.comment',$post),
+    //         ['text'=>'d']
+    //     );
+
+    //     $response->assertSessionHasErrors([
+    //         'text'=>'The text field is required.'
+    //     ]);
+
+
+        $response = $this->actingAs(User::factory()->create())
+        ->withHeaders([
+                'HTTP_X-Requested-with'=> 'XMLHttpRequest'
+        ])->postJson(
+            route('single.comment',$post),
+            ['text'=>'']
+        );
+
+        $response->assertJsonValidationErrors([
+            'text'=>'The text field is required.'
+        ]);
     }
 }
