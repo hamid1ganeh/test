@@ -8,10 +8,10 @@
     @endforeach
 </ul>
 
-@auth
+@auth()
     <form action="{{ route('single.comment',$post) }}" method="post">
         <textarea name="text"></textarea>
-        <button type="submit" name="register">ثبت</button>
+
     </form>
 @endauth
 

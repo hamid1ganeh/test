@@ -6,15 +6,13 @@
 
         <title>Laravel</title>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    </head>
+     </head>
     <body>
         @auth
             @if(auth()->user()->type == 'admin')
                 <a href="/admin/dashboard">Admin Panel</a>
             @endif
-            {{-- @yield('content') --}}
+            @yield('content')
         @endauth
     </body>
 </html>
