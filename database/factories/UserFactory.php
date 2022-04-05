@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Support\Arr;
 
 class UserFactory extends Factory
 {
@@ -19,7 +20,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-          //  'type'=> new Sequence('user','admin'),
+            'type'=> Arr::random(['admin','user']),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -37,6 +38,26 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'email_verified_at' => null,
+            ];
+        });
+    }
+
+    // Indicate that the model's type should be user.
+    public function user()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => 'user',
+            ];
+        });
+    }
+
+    // Indicate that the model's type should be admin.
+    public function admin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => 'admin',
             ];
         });
     }
