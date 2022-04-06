@@ -9,6 +9,9 @@ class UploadImageController extends Controller
 {
      public function upload(Request $request)
      {
+         $request->validate([
+             'image'=>'image|max:250|dimensions:max_width=100,max_height=200'
+         ]);
 
        $image =   $request->file('image');
 
