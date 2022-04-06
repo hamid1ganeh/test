@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Helpers\DurationalOfReading;
 
 class Post extends Model
 {
@@ -27,4 +28,10 @@ class Post extends Model
         return $this->morphMany(Comment::class,'commentable');
     }
 
+    public  function getReadingDurationAttribute()
+    {
+       $dor = new DurationalOfReading($this->description);
+
+       return $dor->getTimePerMinite();
+    }
 }

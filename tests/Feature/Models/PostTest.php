@@ -10,7 +10,7 @@ use Tests\TestCase;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Tag;
-
+use App\Helpers\DurationalOfReading;
 
 class PostTest extends TestCase
 {
@@ -47,5 +47,15 @@ class PostTest extends TestCase
 
         $this->assertCount($count,$post->comments);
         $this->assertTrue($post->comments->first() instanceof Comment);
+    }
+
+    public function testGetReadingDurationAttribute()
+    {
+        $post = Post::factory()->make();
+
+        $dor = new DurationalOfReading($post->description);
+
+        $this->assertEquals($post->readingDuration,$dor->getTimePerMinite());
+
     }
 }
