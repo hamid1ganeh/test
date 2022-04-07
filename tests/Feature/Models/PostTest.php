@@ -11,6 +11,10 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Tag;
 use App\Helpers\DurationalOfReading;
+use Mockery;
+use Mockery\MockInterface;
+
+use function PHPUnit\Framework\assertEquals;
 
 class PostTest extends TestCase
 {
@@ -52,10 +56,29 @@ class PostTest extends TestCase
     public function testGetReadingDurationAttribute()
     {
         $post = Post::factory()->make();
+        $dor = new DurationalOfReading();
+        $dor->setText($post->description);
+        $this->assertEquals($post->readingDuration,$dor->getTimePerMinute());
+    }
 
-        $dor = new DurationalOfReading($post->description);
+    public function testGetReadingDurationAttributeWithMocking()
+    {
+        $this->withoutExceptionHandling();
+        $post = Post::factory()->make();
+        $mock = $this->mock(DurationalOfReading::class,function(MockInterface $mock) use($post){
+            $mock
+            ->shouldReceive('setText')
+            ->with($post->description)
+            ->once()
+            ->andReturn($mock);
 
-        $this->assertEquals($post->readingDuration,$dor->getTimePerMinite());
+           $mock
+           ->shouldReceive('getTimePerMinute')
+           ->once()
+           ->andReturn(20);
 
+        });
+
+        $this->assertEquals(20,$post->readingDuration);
     }
 }

@@ -30,8 +30,8 @@ class Post extends Model
 
     public  function getReadingDurationAttribute()
     {
-       $dor = new DurationalOfReading($this->description);
-
-       return $dor->getTimePerMinite();
+        return app(DurationalOfReading::class)
+            ->setText($this->description)
+            ->getTimePerMinute();
     }
 }

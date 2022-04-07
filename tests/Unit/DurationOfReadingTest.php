@@ -11,11 +11,12 @@ class DurationOfReadingTest extends TestCase
     {
         $text = 'This is for test';
 
-        $dor = new DurationalOfReading($text);
+        $dor = new DurationalOfReading();
+        $dor->setText($text);
 
         $this->assertTrue(true);
 
         $this->assertEquals(4,$dor->getTimePerSecond());
-        $this->assertEquals(4/60,$dor->getTimePerMinite());
+        $this->assertEquals(4/60,$dor->getTimePerMinute());
     }
 }

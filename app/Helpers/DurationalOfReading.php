@@ -9,10 +9,12 @@ class DurationalOfReading
      private $duration;
 
 
-      public function __construct(string $text)
+      public function setText(string $text)
       {
           $this->worldLength = count(explode(" ",$text));
           $this->duration = $this->worldLength*$this->timePerWord;
+
+          return $this;
       }
 
       public function getTimePerSecond()
@@ -20,7 +22,7 @@ class DurationalOfReading
         return $this->duration;
       }
 
-      public function getTimePerMinite()
+      public function getTimePerMinute()
       {
         return $this->duration/60;
       }
