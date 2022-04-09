@@ -12,7 +12,7 @@
             @if(auth()->user()->type == 'admin')
                 <a href="/admin/dashboard">Admin Panel</a>
             @endif
-            @yield('content')
         @endauth
+        @yield('content')
     </body>
 </html>
