@@ -18,8 +18,11 @@ class ExampleTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser
             ->visit('/')
-            ->pause(5000)
-            ->assertSee('Home Page');
+            ->myAlert("Hello")
+            ->pause(50000)
+            ->assertDialogOpened('Hello')
+            ->acceptDialog()
+            ->pause(2000);
         });
     }
 }
