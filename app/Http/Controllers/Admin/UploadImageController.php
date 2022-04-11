@@ -14,9 +14,9 @@ class UploadImageController extends Controller
          ]);
 
        $image =   $request->file('image');
+       $name = $image->hashName();
+       $image->move(public_path('/upload/'),$name);
 
-       $image->move(public_path('/upload/'),$image->hashName());
-
-       return ['url'=>"/upload/{$image->hashName()}"];
+       return ['url'=>"/upload/{$name}"];
      }
 }

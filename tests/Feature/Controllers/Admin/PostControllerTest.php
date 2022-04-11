@@ -37,6 +37,7 @@ class PostControllerTest extends TestCase
 
     public function testCreateMethod()
     {
+        $this->withoutExceptionHandling();
         $this
         ->actingAs(User::factory()->admin()->create())
         ->withoutExceptionHandling();
@@ -78,7 +79,7 @@ class PostControllerTest extends TestCase
 
     public function testStoreMethod()
     {
-         $this->withoutExceptionHandling();
+        //$this->withoutExceptionHandling();
         $user = User::factory()->admin()->create();
         $tags = Tag::factory()->count(rand(1,5))->create();
         $data= Post::factory()
